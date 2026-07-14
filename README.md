@@ -1,10 +1,59 @@
-# Hello-world
-Shahaf kushinsky
+# 🛒 סל זול · Sal Zol
 
-hi 
-its my second time using Github  
+Build or upload a grocery list, find **which Israeli supermarket chain has the
+cheapest basket**, and order it in **one click**.
 
-fdfs fd
- fd
- fds fdf
- s
+> Hebrew, right-to-left web app. Prices are modelled on Israel's mandated
+> price-transparency data ("מחירים שקופים"); see
+> [`data/README-prices.md`](data/README-prices.md) to plug in a live feed.
+
+## What it does
+
+1. **Build a list** — search a catalog of common Israeli groceries (Hebrew or
+   English) and add items with quantities, or
+2. **Upload a list** — paste / upload a `.txt`/`.csv` list; each line is
+   fuzzy-matched to a product, including quantities like `2 חלב` or `עגבניות 3`.
+3. **Compare** — the basket is priced across every chain (Shufersal, Rami Levy,
+   Victory, Yochananof, Osher Ad, Tiv Taam). Chains missing an item are fairly
+   penalised, and the **cheapest full basket wins**, with total savings shown.
+4. **Order in one click** — deep-links every basket item straight into the
+   winning chain's real online store, ready to add to the cart.
+
+## Run it
+
+```bash
+npm install
+npm start        # → http://localhost:3000
+```
+
+```bash
+npm test         # comparison + matching engine tests
+npm run dev      # auto-reload while developing
+```
+
+## How it's built
+
+| Layer | File(s) | Role |
+|-------|---------|------|
+| Data | `data/chains.js`, `data/catalog.js` | Chains + per-chain prices (price-transparency shape) |
+| Matching | `src/matcher.js` | Free-text / uploaded list → catalog products + quantities |
+| Comparison | `src/compare.js` | Basket total per chain, missing-item handling, ranking, order links |
+| API | `src/server.js` | `/api/catalog`, `/api/search`, `/api/match`, `/api/compare`, `/api/order` |
+| UI | `public/` | RTL Hebrew single-page app (no build step) |
+
+### API
+
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /api/catalog` | All chains and products |
+| `GET /api/search?q=` | Search products |
+| `POST /api/match` | Match a pasted/uploaded list `{ text }` |
+| `POST /api/compare` | Compare a basket `{ items:[{productId,qty}] }` |
+| `POST /api/order` | One-click order links `{ chainId, items }` |
+
+## Going live with real prices
+
+The comparison engine only reads each product's `prices` map, so swapping the
+sample catalog for live price-transparency XML requires no changes to the UI,
+matching, ranking, or ordering. See
+[`data/README-prices.md`](data/README-prices.md).

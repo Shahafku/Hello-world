@@ -1,0 +1,24 @@
+{
+  "name": "sal-zol",
+  "version": "1.0.0",
+  "description": "Sal Zol (סל זול) — build or upload a grocery list and find the cheapest basket across Israeli supermarket chains, then order in one click.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "grocery",
+    "israel",
+    "price-comparison",
+    "supermarket",
+    "shopping-list"
+  ],
+  "author": "Shahaf Kushinsky",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

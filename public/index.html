@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>סל זול — השוואת סל קניות וקנייה בקליק</title>
+  <meta name="description" content="בנו או העלו רשימת קניות, גלו איפה הסל הזול ביותר בישראל, והזמינו בקליק אחד." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🛒</span>
+      <div>
+        <h1>סל זול</h1>
+        <p class="tagline">בונים רשימה · משווים מחירים · מזמינים בקליק</p>
+      </div>
+    </div>
+    <div class="basket-pill" id="basketPill" title="פריטים בסל">
+      🧺 <span id="basketCount">0</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Build / upload the list -->
+    <section class="card">
+      <h2>1. בנו את רשימת הקניות</h2>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="search" role="tab">חיפוש והוספה</button>
+        <button class="tab" data-tab="upload" role="tab">העלאת רשימה</button>
+      </div>
+
+      <div class="tab-panel" id="panel-search">
+        <div class="search-row">
+          <input id="searchInput" type="text" placeholder="חפשו מוצר… (למשל: חלב, עגבניות, טונה)" autocomplete="off" />
+        </div>
+        <ul id="suggestions" class="suggestions"></ul>
+        <div id="categories" class="categories"></div>
+      </div>
+
+      <div class="tab-panel hidden" id="panel-upload">
+        <p class="hint">הדביקו או העלו רשימה — שורה לכל פריט. אפשר לציין כמות: <code>2 חלב</code>, <code>עגבניות 3</code>.</p>
+        <textarea id="uploadText" rows="8" placeholder="חלב&#10;2 לחם&#10;עגבניות 1&#10;טונה 5&#10;נייר טואלט"></textarea>
+        <div class="upload-actions">
+          <input type="file" id="fileInput" accept=".txt,.csv,text/plain" hidden />
+          <button class="btn ghost" id="fileBtn">📄 העלאת קובץ (txt/csv)</button>
+          <button class="btn primary" id="parseBtn">הוספה לסל ←</button>
+        </div>
+        <div id="uploadResult" class="upload-result"></div>
+      </div>
+    </section>
+
+    <!-- The basket -->
+    <section class="card">
+      <div class="card-head">
+        <h2>2. הסל שלי</h2>
+        <button class="btn ghost small" id="clearBtn">ניקוי סל</button>
+      </div>
+      <ul id="basketList" class="basket-list"></ul>
+      <p id="basketEmpty" class="empty">הסל ריק — הוסיפו פריטים למעלה.</p>
+      <button class="btn primary big" id="compareBtn" disabled>🔍 השוואת מחירים ומציאת הסל הזול</button>
+    </section>
+
+    <!-- Results -->
+    <section class="card hidden" id="resultsCard">
+      <h2>3. תוצאות ההשוואה</h2>
+      <div id="winner" class="winner"></div>
+      <div id="results" class="results"></div>
+      <p class="disclaimer">
+        המחירים הם נתוני דוגמה בפורמט של תוכנית "מחירים שקופים". הקנייה בקליק פותחת את חנות הרשת עם הפריטים שלכם — ההזמנה מבוצעת באתר הרשת עצמה.
+      </p>
+    </section>
+  </main>
+
+  <!-- Order modal -->
+  <div class="modal-overlay hidden" id="orderModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="orderTitle">הזמנה בקליק</h3>
+        <button class="modal-close" id="orderClose">×</button>
+      </div>
+      <p class="hint" id="orderIntro"></p>
+      <div class="order-actions">
+        <button class="btn primary" id="openAllBtn">🚀 פתחו את כל הפריטים בחנות הרשת</button>
+        <button class="btn ghost" id="copyListBtn">📋 העתקת הרשימה</button>
+      </div>
+      <ul id="orderLinks" class="order-links"></ul>
+    </div>
+  </div>
+
+  <footer>
+    <p>סל זול · השוואת סל קניות בין רשתות בישראל · נתוני מחירים לדוגמה</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
