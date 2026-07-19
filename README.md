@@ -16,8 +16,14 @@ cheapest basket**, and order it in **one click**.
 3. **Compare** — the basket is priced across every chain (Shufersal, Rami Levy,
    Victory, Yochananof, Osher Ad, Tiv Taam). Chains missing an item are fairly
    penalised, and the **cheapest full basket wins**, with total savings shown.
-4. **Order in one click** — deep-links every basket item straight into the
-   winning chain's real online store, ready to add to the cart.
+4. **Order in one click** — a generated **cart-filler bookmarklet** carries the
+   whole basket: drag it to your bookmarks bar once, open the winning chain's
+   store, click the bookmark — a floating panel appears with your list and, per
+   item, fills the store's search box and clicks its "הוספה לסל" button.
+   Progress is saved on the store's site, so it resumes across page loads.
+   Per-item links are also provided: direct store search where the URL format
+   is verified (Shufersal), otherwise a Google search scoped to the chain's
+   domain — links that always resolve to the chain's own product pages.
 
 ## Run it
 
@@ -38,6 +44,7 @@ npm run dev      # auto-reload while developing
 | Data | `data/chains.js`, `data/catalog.js` | Chains + per-chain prices (price-transparency shape) |
 | Matching | `src/matcher.js` | Free-text / uploaded list → catalog products + quantities |
 | Comparison | `src/compare.js` | Basket total per chain, missing-item handling, ranking, order links |
+| Cart filler | `src/assistant.js` | Self-contained bookmarklet that fills the chain's cart in the shopper's browser |
 | API | `src/server.js` | `/api/catalog`, `/api/search`, `/api/match`, `/api/compare`, `/api/order` |
 | UI | `public/` | RTL Hebrew single-page app (no build step) |
 

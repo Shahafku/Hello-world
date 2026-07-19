@@ -15,6 +15,7 @@ import { chains } from '../data/chains.js';
 import { products } from '../data/catalog.js';
 import { matchLine, matchList } from './matcher.js';
 import { compareBasket, buildOrderLinks } from './compare.js';
+import { buildBookmarklet } from './assistant.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -68,6 +69,7 @@ app.post('/api/order', (req, res) => {
   const { chainId, items } = req.body || {};
   const out = buildOrderLinks(chainId, Array.isArray(items) ? items : []);
   if (!out) return res.status(400).json({ error: 'unknown chain' });
+  out.bookmarklet = buildBookmarklet(out.allItems);
   res.json(out);
 });
 

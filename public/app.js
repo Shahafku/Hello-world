@@ -269,20 +269,20 @@ async function orderFrom(chainId) {
 
   $('#orderTitle').textContent = `הזמנה מ${data.chainNameHe}`;
   $('#orderIntro').innerHTML =
-    `לחיצה על "פתחו את כל הפריטים" תפתח את חנות ${escapeHtml(data.chainNameHe)} עם כל מוצר מוכן לחיפוש והוספה לעגלה. ` +
+    `שלושה צעדים וכל הסל בעגלה של ${escapeHtml(data.chainNameHe)}. ` +
     (chainResult ? `סה״כ משוער: <b>${ils(chainResult.subtotal)}</b>.` : '');
 
+  // The bookmarklet carries the full list inside it — drag it to the
+  // bookmarks bar, then click it while on the chain's site.
+  $('#bookmarkletLink').href = data.bookmarklet;
+  $('#openStoreBtn').href = data.homeUrl;
+
   $('#orderLinks').innerHTML = data.links
-    .map((l) => `<li><a href="${l.url}" target="_blank" rel="noopener">🔗 ${escapeHtml(l.nameHe)}</a></li>`)
+    .map((l) => `<li><a href="${l.url}" target="_blank" rel="noopener">🔗 ${escapeHtml(l.nameHe)}${l.qty > 1 ? ` ×${l.qty}` : ''}</a>${data.direct ? '' : ' <span class="sug-meta">(חיפוש גוגל באתר הרשת)</span>'}</li>`)
     .join('');
 
-  $('#openAllBtn').onclick = () => {
-    // Open the store home first, then each item search in new tabs.
-    window.open(data.homeUrl, '_blank', 'noopener');
-    data.links.forEach((l, i) => setTimeout(() => window.open(l.url, '_blank', 'noopener'), i * 250));
-  };
   $('#copyListBtn').onclick = () => {
-    const txt = data.links.map((l) => `• ${l.nameHe}`).join('\n');
+    const txt = data.allItems.map((l) => `• ${l.nameHe}${l.qty > 1 ? ` ×${l.qty}` : ''}`).join('\n');
     navigator.clipboard.writeText(txt).then(() => {
       $('#copyListBtn').textContent = '✓ הועתק';
       setTimeout(() => ($('#copyListBtn').textContent = '📋 העתקת הרשימה'), 1500);

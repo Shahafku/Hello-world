@@ -82,11 +82,39 @@
         <button class="modal-close" id="orderClose">×</button>
       </div>
       <p class="hint" id="orderIntro"></p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <div>
+            <b>גררו את הכפתור לסרגל הסימניות</b> (פעם אחת; אל תלחצו — גררו)
+            <div><a id="bookmarkletLink" class="bookmarklet" href="#" onclick="return false" title="גררו אותי לסרגל הסימניות">🛒 מילוי עגלה — סל זול</a></div>
+            <div class="hint">לא רואים את סרגל הסימניות? ‎Ctrl+Shift+B</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <div>
+            <b>פתחו את חנות הרשת</b>
+            <div><a id="openStoreBtn" class="btn primary" href="#" target="_blank" rel="noopener">🏪 פתיחת החנות</a></div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <div>
+            <b>בחנות — לחצו על הסימנייה</b><br>
+            <span class="hint">תיפתח רשימה צפה עם כל הסל: 🔍 מחפש כל פריט בחנות, ➕ מוסיף לעגלה, ✓ מסמן שבוצע. אם העמוד נטען מחדש — לחצו שוב על הסימנייה והרשימה תמשיך מאותו מקום.</span>
+          </div>
+        </div>
+      </div>
+
       <div class="order-actions">
-        <button class="btn primary" id="openAllBtn">🚀 פתחו את כל הפריטים בחנות הרשת</button>
         <button class="btn ghost" id="copyListBtn">📋 העתקת הרשימה</button>
       </div>
-      <ul id="orderLinks" class="order-links"></ul>
+      <details class="links-details">
+        <summary>קישורים לכל פריט בנפרד</summary>
+        <ul id="orderLinks" class="order-links"></ul>
+      </details>
     </div>
   </div>
 

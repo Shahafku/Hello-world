@@ -88,19 +88,32 @@ export function compareBasket(items) {
   };
 }
 
-// Build one-click order links for a given chain and basket: each item deep-links
-// into that chain's real online store search.
+// Build one-click order links for a given chain and basket. Each item links to
+// the chain's store search when the URL format is verified (`direct`), or to a
+// Google search scoped to the chain's domain otherwise — those always resolve
+// and land on the chain's own product page.
 export function buildOrderLinks(chainId, items) {
   const chain = chains.find((c) => c.id === chainId);
   if (!chain) return null;
-  const links = (items || [])
-    .map((it) => productById[it.productId])
-    .filter(Boolean)
-    .filter((p) => p.prices[chainId] != null)
-    .map((p) => ({
-      productId: p.id,
-      nameHe: p.nameHe,
-      url: chain.searchUrl.replace('{q}', encodeURIComponent(p.nameHe)),
+  const enriched = (items || [])
+    .map((it) => ({ product: productById[it.productId], qty: Number(it.qty) || 1 }))
+    .filter((it) => it.product);
+  const links = enriched
+    .filter(({ product }) => product.prices[chainId] != null)
+    .map(({ product, qty }) => ({
+      productId: product.id,
+      nameHe: product.nameHe,
+      qty,
+      url: chain.searchUrl.replace('{q}', encodeURIComponent(product.nameHe)),
     }));
-  return { chainId, chainNameHe: chain.nameHe, homeUrl: chain.homeUrl, links };
+  return {
+    chainId,
+    chainNameHe: chain.nameHe,
+    homeUrl: chain.homeUrl,
+    direct: !!chain.direct,
+    links,
+    // Full basket (including items this chain may not stock) for the
+    // cart-filler bookmarklet — the shopper decides on substitutes in-store.
+    allItems: enriched.map(({ product, qty }) => ({ nameHe: product.nameHe, qty })),
+  };
 }
